@@ -1,0 +1,43 @@
+version: "3.7"
+
+services:
+    dealer-imitator-srv:
+        container_name: dealer-imitator-srv
+        build:
+            context: ./src
+            dockerfile: Dockerfile
+            args:
+                - GROUP_ID=1000
+                - USER_ID=1000
+        command: uvicorn dealer_imitator.server:app --reload --workers 2 --host 0.0.0.0 --port 8008
+        volumes:
+            - ./src:/usr/src/app
+        env_file:
+            - src/.env.dev
+        ports:
+            - "8008:8008"
+        depends_on:
+            - dealer-imitator-mongodb-srv
+
+    dealer-imitator-mongodb-srv:
+        image: mongo:6.0.1
+        ports:
+            - "27020:27017"
+        logging:
+            driver: none
+        volumes:
+            - dealer_imitator_mongodb_data:/data/db
+
+    dealer-imitator-redis-srv:
+        image: redis
+        restart: always
+        ports:
+            - "6382:6379"
+
+networks:
+    default:
+        external: true
+        name: mima_network
+
+volumes:
+    dealer_imitator_mongodb_data:
