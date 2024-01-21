@@ -1,9 +1,9 @@
 from fastapi import APIRouter
-from .endpoints.games import router as game_router
+from .endpoints.blackjack import router as game_router
 
 
 router = APIRouter()
-router.include_router(game_router, prefix="/games", tags=["games"])
+router.include_router(game_router, prefix="/blackjack", tags=["blackjack"])
 
 
 @router.get("/health", tags=["general"])

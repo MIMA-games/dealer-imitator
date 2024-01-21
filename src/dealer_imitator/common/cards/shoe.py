@@ -83,6 +83,3 @@ class Shoe:
 
     def __getitem__(self, card: str) -> Card:
         return self._shoe[card]
-
-
-shoe = Shoe.setup(8)

@@ -1,4 +1,11 @@
-from enum import Enum
+from enum import Enum, StrEnum
+
+
+class Games(StrEnum):
+    BLACKJACK = "blackjack"
+    CASINO_POKER = "casino_poker"
+    BACCARAT = "baccarat"
+
 
 class GameStates(Enum):
 
