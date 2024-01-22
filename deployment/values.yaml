@@ -1,0 +1,57 @@
+appName: dealer-imitator-backend
+appWorkerName: dealer-imitator-worker
+replicaCount: 1
+maxReplicas: 2
+
+image:
+  repository: gcr.io/mima-325516/dealer-imitator/dealer-imitator
+  tag: dev
+pullPolicy: Always
+
+containerEnvVarsWorker:
+  ENVIRONMENT: "production"
+  DEALER_IMITATOR_MONGODB_URL: "mongodb://mongo-dealer-imitator:27017/"
+  DATABASE_NAME: "dealer-imitator"
+  REDIS_URL: "redis://redis-dealer-imitator:6379/4"
+  DEALER_IMITATOR_CELERY_BROKER_URL: "amqp://dealer_imitator_user:Odu2IiFUxYr003psz1ejMdAZMcNvQf0vgklMrQxMDOCrHRJ4GLe@dealer-imitator-rabbitmq:5672"
+  DEALER_IMITATOR_CELERY_RESULT_BACKEND: "redis://redis-dealer-imitator:6379/3"
+  DEALER_IMITATOR_WS_MESSAGE_QUEUE: "redis://redis-dealer-imitator:6379/3"
+  SECRET_KEY: "MHDu3zhDI9BkDxsnVSpBMf3CdeMPrStW"
+  ALLOWED_ORIGINS: "http://dev.mima.live, https://dev.mima.live, dev.platform.mima-poker.cc, https://dev.platform.mima-poker.cc"
+  CLIENT_GAME_URL: "http://mima.live, https://mima.live"
+  BLACKJACK_BACKEND_URL: http://blackjack-backend-service:8005
+
+containerEnvVars:
+  ENVIRONMENT: "production"
+  DEALER_IMITATOR_MONGODB_URL: "mongodb://mongo-dealer-imitator:27017/"
+  DATABASE_NAME: "dealer-imitator"
+  REDIS_URL: "redis://redis-dealer-imitator:6379/4"
+  DEALER_IMITATOR_CELERY_BROKER_URL: "amqp://dealer_imitator_user:Odu2IiFUxYr003psz1ejMdAZMcNvQf0vgklMrQxMDOCrHRJ4GLe@dealer-imitator-rabbitmq:5672"
+  DEALER_IMITATOR_CELERY_RESULT_BACKEND: "redis://redis-dealer-imitator:6379/3"
+  DEALER_IMITATOR_WS_MESSAGE_QUEUE: "redis://redis-dealer-imitator:6379/3"
+  SECRET_KEY: "MHDu3zhDI9BkDxsnVSpBMf3CdeMPrStW"
+  ALLOWED_ORIGINS: "http://dev.mima.live, https://dev.mima.live, dev.platform.mima-poker.cc, https://dev.platform.mima-poker.cc"
+  CLIENT_GAME_URL: "http://mima.live, https://mima.live"
+  BLACKJACK_BACKEND_URL: http://blackjack-backend-service:8005
+
+request:
+  memory: "300Mi"
+  cpu: "100m"
+
+limits:
+  memory: "500Mi"
+  cpu: "200m"
+
+service:
+  type: ClusterIP
+  port: 8008
+  targetPort: 8008
+
+
+workerRequest:
+  memory: "300Mi"
+  cpu: "100m"
+
+workerLimit:
+  memory: "500Mi"
+  cpu: "200m"

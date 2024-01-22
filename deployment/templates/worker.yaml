@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appWorkerName }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.appWorkerName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appWorkerName }}
+        version: "{{ .Values.image.releaseDate }}"
+    spec:
+      containers:
+      - name: {{ .Values.appWorkerName }}
+        image: "{{ .Values.image.repository}}:{{ .Values.image.tag}}"
+        imagePullPolicy: Always
+        command: ["/bin/sh"]
+        args: ["-c", "celery -A dealer_imitator.server.celery_app worker --loglevel=INFO"]
+        resources:
+          requests:
+            memory: {{.Values.workerLimit.memory}}
+            cpu: {{ .Values.workerLimit.cpu }}
+          limits:
+            memory: {{ .Values.workerLimit.memory }}
+            cpu: {{ .Values.workerLimit.cpu }}
+        env:
+        {{- range $name, $value := .Values.containerEnvVarsWorker }}
+        {{- if not (empty $value) }}
+        - name: {{ $name }}
+          value: {{ $value | quote }}
+        {{- end }}
+        {{- end }}

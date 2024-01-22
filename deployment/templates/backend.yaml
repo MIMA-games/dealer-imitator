@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+        version: "{{ .Values.image.releaseDate }}"
+    spec:
+      containers:
+      - name: {{ .Values.appName }}
+        image: "{{ .Values.image.repository}}:{{ .Values.image.tag}}"
+        imagePullPolicy: Always
+        command: ["/bin/sh"]
+        args: ["-c", "uvicorn dealer_imitator.server:app --reload --workers 2 --host 0.0.0.0 --port {{ .Values.service.targetPort }} --log-level debug"]
+        resources:
+          requests:
+            memory: {{.Values.request.memory}}
+            cpu: {{ .Values.request.cpu }}
+          limits:
+            memory: {{ .Values.limits.memory }}
+            cpu: {{ .Values.limits.cpu }}
+        ports:
+        - containerPort: {{ .Values.service.targetPort }}
+        env:
+        {{- range $name, $value := .Values.containerEnvVars }}
+        {{- if not (empty $value) }}
+        - name: {{ $name }}
+          value: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
