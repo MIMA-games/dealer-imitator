@@ -25,6 +25,22 @@ class SioClient:
             if data["game_state"] == GameStates.DEALING.value:
                 new_card = await DealerManager(game_id).generate_new_card()
                 print(new_card)
+        
+        @sio.event
+        async def scan_dealer_card(data):
+            """ NOT IMPLEMENTED YET """
+        
+        @sio.event
+        async def start_new_round(data):
+            """ NOT IMPLEMENTED YET """
+        
+        @sio.event
+        async def start_timer(data):
+            """ NOT IMPLEMENTED YET """
+        
+        @sio.event
+        async def player_action(data):
+            """ NOT IMPLEMENTED YET """
 
         @sio.event
         async def message(data):
