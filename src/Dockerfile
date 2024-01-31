@@ -43,6 +43,7 @@ RUN chown -R appuser:appuser /usr/src/app && \
     chmod -R u+w /usr/src/app
 
 
+RUN apk add --no-cache bash
 
 # switch to the app user
 USER appuser
