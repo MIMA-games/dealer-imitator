@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 from dealer_imitator.common.cards.card_generator import CardGenerator
 from dealer_imitator.connections.async_redis_conn import r
+from dealer_imitator.common.cards.shoe import shoe
 
 
 class IDealerManager(ABC):
@@ -23,3 +24,7 @@ class DealerManager(IDealerManager):
         self.new_card = self.remaining_cards[new_card_index]
         await r.remove_card_from_list(self.game_id, self.new_card)
         return self.new_card
+    
+    async def shuffle(self) -> None:
+        await r.remove_all_remaining_cards(self.game_id)
+        await r.add_initial_cards_list(self.game_id, list(shoe.shoe.keys()))

@@ -22,7 +22,7 @@ services:
     dealer-imitator-mongodb-srv:
         image: mongo:6.0.1
         ports:
-            - "27020:27017"
+            - "27021:27017"
         logging:
             driver: none
         volumes:

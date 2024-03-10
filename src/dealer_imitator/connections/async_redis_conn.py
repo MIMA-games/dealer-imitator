@@ -41,6 +41,12 @@ class AsyncRedisConn:
     
     async def remove_all_remaining_cards(self, game_id: str):
         await self.cache.delete(game_id)
+    
+    async def add_launched_game_to_the_list(self, game_type: str, game_id: str):
+        await self.cache.rpush("games", f"{game_type}:{game_id}")
+    
+    async def get_launched_games(self):
+        return await self.cache.lrange("games", 0, -1)
 
     async def flush(self):
         await self.cache.flushdb()
